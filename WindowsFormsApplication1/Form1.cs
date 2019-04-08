@@ -10,13 +10,42 @@ using System.Windows.Forms;
 using System.IO.Ports;
 using System.Threading;
 
+
 namespace WindowsFormsApplication1
 {
+    //class Data_Thread
+    //{
+    //    string dataIn;
+    //    SerialPort serialPort1;
+
+    //    delegate void SetTextCallback(string text);
+    //    public void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
+    //    {
+    //        dataIn = serialPort1.ReadExisting();
+    //        if (dataIn != String.Empty)
+    //        {
+    //            SetText(dataIn);
+    //        }
+    //    }
+    //    public void SetText(string text)
+    //    {
+
+    //        if (this.dataIn.InvokeRequired)
+    //        {
+
+    //            SetTextCallback d = new SetTextCallback(SetText);
+
+    //            this.Invoke(d, new object[] { text });
+
+    //        }
+
+    //        else this.dataIn = text;
+
+    //    }
+    //}
     public partial class Form1 : Form
     {
-        //ThreadStart ts = new ThreadStart();
-        //Thread t = new Thread(ts);
-        //t.Start();
+        //Thread thr = new Thread(Convert_data);
 
         //string dataOut;
         string dataIn;
@@ -25,20 +54,24 @@ namespace WindowsFormsApplication1
         Graphics g;
         Pen p,aBrush;
         Pen p1;
-        float centerpointx;
-        float centerpointy;
+        Point[] pnt = new Point[3];
+        Point[] pnt1 = new Point[3];
+        Brush brush  = new SolidBrush(Color.Green);
+        Brush brush1 = default(Brush);
+        int centerpointx;
+        int centerpointy;
         bool check = true;
         //private int count;
-        private int angle1 = 1;
+        private int angle1 = 5;
         private int angle2;
         private int l_pen = 400;
-        private int scan_angle = 3;
+        private int scan_angle;
         private int radius = 360;
 
-        private int tx;
-        private int ty;
-        private int tx1;
-        private int ty1;
+        //private int tx;
+        //private int ty;
+        //private int tx1;
+        //private int ty1;
 
         delegate void SetTextCallback(string text);
         public Form1()
@@ -48,6 +81,7 @@ namespace WindowsFormsApplication1
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            brush1 =new SolidBrush(this.BackColor);
             timer1.Stop();
 
             //string[] ports = SerialPort.GetPortNames();
@@ -84,20 +118,35 @@ namespace WindowsFormsApplication1
 
         private void Scan_Clock()
         {
-            scan_angle = 2;
-            angle2 = (angle1 - scan_angle) % 180;
-            p = new Pen(Color.GreenYellow, 5);   //for color
-
-            Decoration();
-
-            tx = (int)(centerpointx + radius*((float)Math.Cos(DETOGRAD(angle1))));
-            ty = (int)(centerpointy - radius*((float)Math.Sin(DETOGRAD(angle1))));
-            g.DrawLine(p, new Point((int)centerpointx, (int)centerpointy), new Point(tx, ty));
+            scan_angle = 5;
+            angle2 = (angle1 - scan_angle);
+            p = new Pen(Color.GreenYellow, 5);   //for color          
+            
+            Decoration();            
+            pnt[0].X = centerpointx;
+            pnt[0].Y = centerpointy;
+            pnt[1].X=(int)(centerpointx + radius*((float)Math.Cos(DETOGRAD(angle1))));
+            pnt[1].Y=(int)(centerpointy - radius*((float)Math.Sin(DETOGRAD(angle1))));
+            pnt[2].X=(int)(centerpointx + radius*((float)Math.Cos(DETOGRAD(angle1+3))));
+            pnt[2].Y=(int)(centerpointy - radius*((float)Math.Sin(DETOGRAD(angle1+3))));
+            Triangle(p,brush, pnt[0], pnt[1], pnt[2]);
+            //tx = (int)(centerpointx + radius*((float)Math.Cos(DETOGRAD(angle1+2))));
+            //ty = (int)(centerpointy - radius*((float)Math.Sin(DETOGRAD(angle1+2))));
+            //g.DrawLine(p, new Point((int)centerpointx, (int)centerpointy), new Point(tx, ty));
 
             p1 = new Pen(this.BackColor, 5);
-            tx1 = (int)(centerpointx + radius*((float)Math.Cos(DETOGRAD(angle2))));
-            ty1 = (int)(centerpointy - radius*((float)Math.Sin(DETOGRAD(angle2))));
-            g.DrawLine(p1, new Point((int)centerpointx, (int)centerpointy), new Point(tx1, ty1));
+            
+            //tx1 = (int)(centerpointx + radius*((float)Math.Cos(DETOGRAD(angle2+2))));
+            //ty1 = (int)(centerpointy - radius*((float)Math.Sin(DETOGRAD(angle2+2))));
+            //g.DrawLine(p1, new Point((int)centerpointx, (int)centerpointy), new Point(tx1, ty1));
+            pnt1[0].X = centerpointx;
+            pnt1[0].Y = centerpointy;
+            pnt1[1].X = (int)(centerpointx + radius * ((float)Math.Cos(DETOGRAD(angle2))));
+            pnt1[1].Y = (int)(centerpointy - radius * ((float)Math.Sin(DETOGRAD(angle2))));
+            pnt1[2].X = (int)(centerpointx + radius * ((float)Math.Cos(DETOGRAD(angle2 + 2))));
+            pnt1[2].Y = (int)(centerpointy - radius * ((float)Math.Sin(DETOGRAD(angle2 + 2))));
+            Triangle(p1,brush1, pnt1[0], pnt1[1], pnt1[2]);
+            
             angle1++;
             Convert_data();
             if (angle1 == 179) { check = false; }
@@ -105,22 +154,32 @@ namespace WindowsFormsApplication1
 
         private void Scan_ReverseClock()
         {
-            scan_angle = -2;
-            angle2 = (angle1 - scan_angle) % 180;
+            scan_angle = -5;
+            angle2 = (angle1 - scan_angle);
             p = new Pen(Color.GreenYellow, 5);   //for color
-
             Decoration();
-
-            tx = (int)(centerpointx + radius*((float)Math.Cos(DETOGRAD(angle1))));
-            ty = (int)(centerpointy - radius*((float)Math.Sin(DETOGRAD(angle1))));
-            g.DrawLine(p, new Point((int)centerpointx, (int)centerpointy), new Point(tx, ty));
-
+            pnt[0].X = centerpointx;
+            pnt[0].Y = centerpointy;
+            pnt[1].X = (int)(centerpointx + radius * ((float)Math.Cos(DETOGRAD(angle1))));
+            pnt[1].Y = (int)(centerpointy - radius * ((float)Math.Sin(DETOGRAD(angle1))));
+            pnt[2].X = (int)(centerpointx + radius * ((float)Math.Cos(DETOGRAD(angle1 + 3))));
+            pnt[2].Y = (int)(centerpointy - radius * ((float)Math.Sin(DETOGRAD(angle1 + 3))));
+            Triangle(p,brush, pnt[0], pnt[1], pnt[2]);
+            //tx = (int)(centerpointx + radius*((float)Math.Cos(DETOGRAD(angle1+2))));
+            //ty = (int)(centerpointy - radius*((float)Math.Sin(DETOGRAD(angle1+2))));
+            //g.DrawLine(p, new Point((int)centerpointx, (int)centerpointy), new Point(tx, ty));
 
             p1 = new Pen(this.BackColor, 5);
-            
-                tx1 = (int)(centerpointx + radius*((float)Math.Cos(DETOGRAD(angle2))));
-                ty1 = (int)(centerpointy - radius*((float)Math.Sin(DETOGRAD(angle2))));
-                g.DrawLine(p1, new Point((int)centerpointx, (int)centerpointy), new Point(tx1, ty1));
+            //tx1 = (int)(centerpointx + radius*((float)Math.Cos(DETOGRAD(angle2+2))));
+            //ty1 = (int)(centerpointy - radius*((float)Math.Sin(DETOGRAD(angle2+2))));
+            //g.DrawLine(p1, new Point((int)centerpointx, (int)centerpointy), new Point(tx1, ty1));
+            pnt1[0].X = centerpointx;
+            pnt1[0].Y = centerpointy;
+            pnt1[1].X = (int)(centerpointx + radius * ((float)Math.Cos(DETOGRAD(angle2))));
+            pnt1[1].Y = (int)(centerpointy - radius * ((float)Math.Sin(DETOGRAD(angle2))));
+            pnt1[2].X = (int)(centerpointx + radius * ((float)Math.Cos(DETOGRAD(angle2 - 2))));
+            pnt1[2].Y = (int)(centerpointy - radius * ((float)Math.Sin(DETOGRAD(angle2 - 2))));
+            Triangle(p1,brush1, pnt1[0], pnt1[1], pnt1[2]);
             
             angle1--;
             Convert_data();
@@ -215,13 +274,9 @@ namespace WindowsFormsApplication1
         private void btnExit_Click(object sender, EventArgs e)
         {
                      
-            DialogResult ret = MessageBox.Show("Bạn muốn thoát ứng dụng ?", "Thông Báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-            if (ret == DialogResult.OK)
-            {
-                serialPort1.Close();
-                dataIn = "";
-                Close();
-            }
+            //DialogResult ret = MessageBox.Show("Bạn muốn thoát ứng dụng ?", "Thông Báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            serialPort1.Close();
+            Close();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -265,6 +320,7 @@ namespace WindowsFormsApplication1
         {
             DialogResult ret = MessageBox.Show("Ban co muon thoat ?", "Thong Bao", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             e.Cancel = (ret == DialogResult.No);
+
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
@@ -276,6 +332,8 @@ namespace WindowsFormsApplication1
                 serialPort1.DataBits = Convert.ToInt32("8");
                 serialPort1.StopBits = (StopBits)Enum.Parse(typeof(StopBits), "One");
                 serialPort1.Parity = (Parity)Enum.Parse(typeof(Parity), "None");
+
+                serialPort1.DataReceived += new SerialDataReceivedEventHandler(serialPort1_DataReceived);
 
                 serialPort1.Open();
                 progressBar1.Value = 100;
@@ -305,10 +363,14 @@ namespace WindowsFormsApplication1
 
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            dataIn = serialPort1.ReadExisting();
-            if (dataIn != String.Empty)
+           try
             {
-                SetText(dataIn);
+                dataIn = serialPort1.ReadLine();
+                SetText(dataIn); 
+            }
+            catch
+            {
+
             }
         }
         private void SetText(string text)
@@ -330,42 +392,49 @@ namespace WindowsFormsApplication1
         {
             lblDistance0.Text = dataIn;
         }
-
-        private void Convert_data_Reverse()
-        {
-            float distance_object = int.Parse(dataIn);
-            int distance_scan = Convert.ToInt32(txtRadius.Value);
-            float OA = radius * (float)(distance_object / distance_scan);
-
-            Point p = new Point();
-            p.X = (int)centerpointx + (int)(OA * Math.Cos(Math.PI * (angle1 - scan_angle - 1) / 180));
-            p.Y = (int)centerpointy - (int)(OA * Math.Sin(Math.PI * (angle1 - scan_angle - 1) / 180));
-
-            Brush aBrush = (Brush)Brushes.Red;
-            g.FillEllipse(aBrush, p.X, p.Y, 5, 5); 
-        }
-
         private void Convert_data()
         {
-            if (serialPort1.IsOpen) {
+            if (serialPort1.IsOpen) 
+            {
                 try
                 {
                     float distance_object = int.Parse(dataIn);
                     int distance_scan = Convert.ToInt32(txtRadius.Value);
                     float OA = radius * (float)(distance_object / distance_scan);
 
-                    Point p = new Point();
-                    p.X = (int)centerpointx + (int)(OA * Math.Cos(Math.PI * angle2 / 180));
-                    p.Y = (int)centerpointy - (int)(OA * Math.Sin(Math.PI * angle2 / 180));
+                    if (OA < radius)
+                    {
+                        Point p = new Point();
+                        p.X = (int)centerpointx + (int)(OA * Math.Cos(Math.PI * angle2 / 180));
+                        p.Y = (int)centerpointy - (int)(OA * Math.Sin(Math.PI * angle2 / 180));
 
-                    aBrush = new Pen(Color.Red, 10);
-                    g.DrawRectangle(aBrush, p.X, p.Y, 2, 2);
+                        aBrush = new Pen(Color.Red, 3);
+                        g.DrawRectangle(aBrush, p.X, p.Y, 2, 2);
+                    }
                     lblDistance0.Text = "";
                 }
                 catch { }
             }
             
             
+        }
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
+        private void Triangle(Pen pen_draw,Brush b, Point p1, Point p2, Point p3)
+        {          
+            Point[] pnt = new Point[3];
+
+            pnt[0] = p1;
+            pnt[1] = p2;
+            pnt[2] = p3;
+
+
+            g.DrawPolygon(pen_draw, pnt);
+
+            g.FillPolygon(b, pnt);
+           
         }
     }
 }
