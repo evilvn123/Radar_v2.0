@@ -30,12 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnStart = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblAngle = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnExit = new System.Windows.Forms.Button();
-            this.btnStop = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
@@ -68,6 +66,8 @@
             this.lbl30 = new System.Windows.Forms.Label();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -82,21 +82,6 @@
             // 
             this.timer1.Interval = 200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // btnStart
-            // 
-            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnStart.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnStart.Location = new System.Drawing.Point(15, 479);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(50, 50);
-            this.btnStart.TabIndex = 2;
-            this.btnStart.UseVisualStyleBackColor = false;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
-            this.btnStart.MouseEnter += new System.EventHandler(this.btnStart_MouseEnter);
-            this.btnStart.MouseLeave += new System.EventHandler(this.btnStart_MouseLeave);
             // 
             // label1
             // 
@@ -140,6 +125,7 @@
             // btnExit
             // 
             this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnExit.BackgroundImage = global::WindowsFormsApplication1.Properties.Resources.exit;
             this.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnExit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExit.Location = new System.Drawing.Point(179, 478);
@@ -150,20 +136,6 @@
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             this.btnExit.MouseEnter += new System.EventHandler(this.btnExit_MouseEnter);
             this.btnExit.MouseLeave += new System.EventHandler(this.btnExit_MouseLeave);
-            // 
-            // btnStop
-            // 
-            this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnStop.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnStop.Location = new System.Drawing.Point(97, 478);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(50, 50);
-            this.btnStop.TabIndex = 3;
-            this.btnStop.UseVisualStyleBackColor = false;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            this.btnStop.MouseEnter += new System.EventHandler(this.btnStop_MouseEnter);
-            this.btnStop.MouseLeave += new System.EventHandler(this.btnStop_MouseLeave);
             // 
             // groupBox2
             // 
@@ -373,11 +345,11 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Lucida Sans", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.IndianRed;
-            this.label3.Location = new System.Drawing.Point(202, 9);
+            this.label3.Location = new System.Drawing.Point(322, 9);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(367, 38);
+            this.label3.Size = new System.Drawing.Size(137, 38);
             this.label3.TabIndex = 0;
-            this.label3.Text = "RADAR SONAR TEST";
+            this.label3.Text = "RADAR";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel2
@@ -543,9 +515,36 @@
             // 
             this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             // 
-            // backgroundWorker1
+            // btnStop
             // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnStop.BackgroundImage = global::WindowsFormsApplication1.Properties.Resources.stop;
+            this.btnStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnStop.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStop.Location = new System.Drawing.Point(97, 478);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(50, 50);
+            this.btnStop.TabIndex = 3;
+            this.btnStop.UseVisualStyleBackColor = false;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            this.btnStop.MouseEnter += new System.EventHandler(this.btnStop_MouseEnter);
+            this.btnStop.MouseLeave += new System.EventHandler(this.btnStop_MouseLeave);
+            // 
+            // btnStart
+            // 
+            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnStart.BackgroundImage = global::WindowsFormsApplication1.Properties.Resources.start;
+            this.btnStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStart.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnStart.Location = new System.Drawing.Point(15, 479);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(50, 50);
+            this.btnStart.TabIndex = 2;
+            this.btnStart.UseVisualStyleBackColor = false;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnStart.MouseEnter += new System.EventHandler(this.btnStart_MouseEnter);
+            this.btnStart.MouseLeave += new System.EventHandler(this.btnStart_MouseLeave);
             // 
             // Form1
             // 
