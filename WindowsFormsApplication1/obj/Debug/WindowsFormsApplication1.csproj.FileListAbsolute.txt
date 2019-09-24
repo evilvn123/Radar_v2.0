@@ -16,3 +16,15 @@ C:\Users\20152\Downloads\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFo
 C:\Users\20152\Downloads\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
 C:\Users\20152\Downloads\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 C:\Users\20152\Downloads\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\20152\Desktop\C# project\test_radar\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
+C:\Users\20152\Desktop\C# project\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\20152\Desktop\C# project\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\20152\Desktop\C# project\test_radar\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\20152\Desktop\C# project\test_radar\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\20152\Desktop\C# project\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojResolveAssemblyReference.cache
+C:\Users\20152\Desktop\C# project\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\20152\Desktop\C# project\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\20152\Desktop\C# project\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\20152\Desktop\test_radar\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
+C:\Users\20152\Desktop\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\20152\Desktop\test_radar\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb

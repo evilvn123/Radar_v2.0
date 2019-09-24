@@ -13,36 +13,6 @@ using System.Threading;
 
 namespace WindowsFormsApplication1
 {
-    //class Data_Thread
-    //{
-    //    string dataIn;
-    //    SerialPort serialPort1;
-
-    //    delegate void SetTextCallback(string text);
-    //    public void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
-    //    {
-    //        dataIn = serialPort1.ReadExisting();
-    //        if (dataIn != String.Empty)
-    //        {
-    //            SetText(dataIn);
-    //        }
-    //    }
-    //    public void SetText(string text)
-    //    {
-
-    //        if (this.dataIn.InvokeRequired)
-    //        {
-
-    //            SetTextCallback d = new SetTextCallback(SetText);
-
-    //            this.Invoke(d, new object[] { text });
-
-    //        }
-
-    //        else this.dataIn = text;
-
-    //    }
-    //}
     public partial class Form1 : Form
     {
 
@@ -58,10 +28,10 @@ namespace WindowsFormsApplication1
         int centerpointx;
         int centerpointy;
         bool check = true;
-        private int angle1 = 5;
-        private int angle2;
+        private int angle1; //Goc cua duong thang mau xanh di truoc
+        private int angle2 = 10;  //Goc cua duong thang mau xanh di sau
         private int l_pen = 400;
-        private int scan_angle;
+        private int scan_angle; //Goc quet
         private int radius = 360;
 
         delegate void SetTextCallback(string text);
@@ -72,6 +42,8 @@ namespace WindowsFormsApplication1
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            lblRequired.Text = "";
+            lblRequired.Visible = false;
             brush1 =new SolidBrush(this.BackColor);
             timer1.Stop();
             cboComPort.DataSource = SerialPort.GetPortNames();
@@ -98,15 +70,17 @@ namespace WindowsFormsApplication1
                 }
            
 
-            lblAngle.Text = angle1 + "°";
+            lblAngle.Text = angle2 + "°";
         }
         private void Scan_Clock()
         {
-            scan_angle = 4;
-            angle2 = (angle1 - scan_angle);
+            scan_angle = 4; //Goc quet
+            angle1 = (angle2 + scan_angle);
             p = new Pen(Color.GreenYellow, 5);   //for color          
             
-            Decoration();            
+            Decoration();  
+            
+            //Ve tam giac xanh          
             pnt[0].X = centerpointx;
             pnt[0].Y = centerpointy;
             pnt[1].X=(int)(centerpointx + radius*((float)Math.Cos(DETOGRAD(angle1))));
@@ -115,7 +89,7 @@ namespace WindowsFormsApplication1
             pnt[2].Y=(int)(centerpointy - radius*((float)Math.Sin(DETOGRAD(angle1+2))));
             Triangle(p,brush, pnt[0], pnt[1], pnt[2]);
 
-
+            //Ve tam giac den
             p1 = new Pen(this.BackColor, 5);
             pnt1[0].X = centerpointx;
             pnt1[0].Y = centerpointy;
@@ -125,20 +99,22 @@ namespace WindowsFormsApplication1
             pnt1[2].Y = (int)(centerpointy - radius * ((float)Math.Sin(DETOGRAD(angle2 + 2))));
             Triangle(p1,brush1, pnt1[0], pnt1[1], pnt1[2]);
             
-            angle1++;
+            angle2++;
             Convert_data();
-            if (angle1 == 179)
+            if (angle2 == 180)
             {
-                angle1 = 176;
+                angle1 = 180;
                 check = false; 
             }
         }
         private void Scan_ReverseClock()
         {
             scan_angle = -4;
-            angle2 = (angle1 - scan_angle);
+            angle1 = (angle2 + scan_angle);
             p = new Pen(Color.GreenYellow, 5);   //for color
             Decoration();
+
+
             pnt[0].X = centerpointx;
             pnt[0].Y = centerpointy;
             pnt[1].X = (int)(centerpointx + radius * ((float)Math.Cos(DETOGRAD(angle1))));
@@ -156,11 +132,11 @@ namespace WindowsFormsApplication1
             pnt1[2].Y = (int)(centerpointy - radius * ((float)Math.Sin(DETOGRAD(angle2 - 2))));
             Triangle(p1,brush1, pnt1[0], pnt1[1], pnt1[2]);
             
-            angle1--;
+            angle2--;
             Convert_data();
-            if (angle1 == 0) 
+            if (angle2 == 0) 
             { 
-                angle1 = 3;  
+                angle1 = 0;  
                 check = true; 
             }
 
@@ -321,13 +297,21 @@ namespace WindowsFormsApplication1
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            if (serialPort1.IsOpen)
-            {                
-                progressBar1.Value = 0;
-                serialPort1.Close();
-                btnOpen.Enabled = true;
-                btnClose.Enabled = false;
+            try
+            {
+                if (serialPort1.IsOpen)
+                {
+                    progressBar1.Value = 0;
+                    serialPort1.Close();
+                    btnOpen.Enabled = true;
+                    btnClose.Enabled = false;
+                }
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -353,7 +337,7 @@ namespace WindowsFormsApplication1
             }
 
             else this.lblDistance0.Text = text;
-
+            //else this.lblRequired.Text = text;
         }
         private void ShowData(object sender, EventArgs e)
         {
@@ -365,6 +349,12 @@ namespace WindowsFormsApplication1
             {
                 try
                 {
+                    //string[] data = dataIn.Split('.');
+                    //lblAngle.Text = data[0];
+                    //lblDistance0.Text = data[1];
+                    //float distance_object = int.Parse(data[0]);
+                    //angle2=int.Parse(data[1]);
+
                     float distance_object = int.Parse(dataIn);
                     int distance_scan = Convert.ToInt32(txtRadius.Value);
                     float OA = radius * (float)(distance_object / distance_scan);
